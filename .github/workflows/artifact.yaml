@@ -41,16 +41,18 @@ jobs:
           tag: ${{ inputs.tag_name }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install libbtrfs-dev needed by podman go module
-        run: |
-          sudo apt-get update
-          sudo apt-get install libbtrfs-dev
-
-      - name: Install go ${{ env.go_version }}
-        uses: actions/setup-go@v5
+      - name: Install Engine CI
+        uses: jaxxstorm/action-install-gh-release@v1
+        if: ${{ inputs.install_binary }}
         with:
-          go-version: ${{ env.go_version }}
-          cache: false
+          repo: containifyci/engine-ci
+          # At the moment fetch latest release
+          # version: ${{ inputs.version }}
+          cache: true
+          extension-matching: disable
+          rename-to: engine-ci
+          chmod: 0755
+          token: ${{ secrets.CONTAINIFYCI_RELEASE_TOKEN }}
 
       - name: Cache Go Mod
         uses: actions/cache@v4
@@ -64,4 +66,4 @@ jobs:
 
       - name: Release
         run: |
-          go run --tags containers_image_openpgp main.go engine -t release
+          engine-ci engine -t release
