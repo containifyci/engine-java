@@ -6,7 +6,7 @@ require (
 	github.com/containers/buildah v1.37.0 // indirect
 	github.com/containers/common v0.60.0 // indirect
 	github.com/containers/podman/v5 v5.1.2 // indirect
-	github.com/containifyci/engine-ci/protos2 v0.2.1 // indirect
+	github.com/containifyci/engine-ci/protos2 v0.2.2 // indirect
 	github.com/docker/docker v27.1.1+incompatible // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/dusted-go/logging v1.2.2 // indirect
@@ -19,7 +19,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-require github.com/containifyci/engine-ci v0.2.1
+require github.com/containifyci/engine-ci v0.2.2
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
