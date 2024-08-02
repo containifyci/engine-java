@@ -151,7 +151,7 @@ func (c *MavenContainer) Build() error {
 		opts.Env = append(opts.Env, []string{
 			fmt.Sprintf("TC_HOST=%s", c.Address().ForContainerDefault()),
 			fmt.Sprintf("TESTCONTAINERS_HOST_OVERRIDE=%s", c.Address().ForContainerDefault()),
-			fmt.Sprintf("CONTAINIFYCI_HOST=%s", container.GetBuild().Custom["CONTAINIFYCI_HOST"][0]),
+			fmt.Sprintf("CONTAINIFYCI_HOST=%s", getContainifyHost()),
 		}...)
 	}
 
@@ -204,10 +204,17 @@ func (c *MavenContainer) Build() error {
 	return err
 }
 
+//TODO should be moved to the engine-ci itself.
+func getContainifyHost() string {
+	if v, ok := container.GetBuild().Custom["CONTAINIFYCI_HOST"]; ok {
+		return v[0]
+	}
+	return ""
+}
+
 func (c *MavenContainer) BuildScript() string {
-	host := container.GetBuild().Custom["CONTAINIFYCI_HOST"][0]
 	// Create a temporary script in-memory
-	return Script(NewBuildScript(c.Container.Verbose, host))
+	return Script(NewBuildScript(c.Container.Verbose, getContainifyHost()))
 }
 
 type MavenBuild struct {
