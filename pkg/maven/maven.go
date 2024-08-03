@@ -144,6 +144,7 @@ func (c *MavenContainer) Build() error {
 	opts.Image = imageTag
 	opts.Env = append(opts.Env, []string{
 		"MAVEN_OPTS=-Xms512m -Xmx512m -XX:MaxDirectMemorySize=512m",
+		fmt.Sprintf("CONTAINIFYCI_HOST=%s", getContainifyHost()),
 	}...)
 
 	// On MacOS, we need to set a special docker host so that the testcontainers can access the host
@@ -151,7 +152,6 @@ func (c *MavenContainer) Build() error {
 		opts.Env = append(opts.Env, []string{
 			fmt.Sprintf("TC_HOST=%s", c.Address().ForContainerDefault()),
 			fmt.Sprintf("TESTCONTAINERS_HOST_OVERRIDE=%s", c.Address().ForContainerDefault()),
-			fmt.Sprintf("CONTAINIFYCI_HOST=%s", getContainifyHost()),
 		}...)
 	}
 
@@ -247,7 +247,7 @@ func NewProd(version string) build.Build {
 			return container.Prod()
 		},
 		name:   "maven-prod",
-		images: []string{ProdImage},
+		images: []string{fmt.Sprintf(ProdImage, version)},
 		async:  false,
 	}
 }
