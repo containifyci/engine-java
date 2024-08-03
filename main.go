@@ -1,36 +1,35 @@
 package main
 
 import (
-	"fmt"
+	"log/slog"
 	"os"
 
 	"github.com/containifyci/engine-ci/cmd"
 	"github.com/containifyci/engine-ci/pkg/build"
+	"github.com/containifyci/engine-ci/pkg/container"
 
 	"github.com/containifyci/engine-ci/pkg/github"
 	"github.com/containifyci/engine-ci/pkg/sonarcloud"
 	"github.com/containifyci/engine-ci/pkg/trivy"
 
-	_ "github.com/containifyci/java/pkg/maven"
-	maven "github.com/containifyci/java/pkg/maven/v21"
-	_ "github.com/containifyci/java/pkg/maven/v17"
+	"github.com/containifyci/java/pkg/maven"
 )
 
 func main() {
-	cmd.Init(cmd.GetBuild()...)
+	arg := cmd.GetBuild()
+	cmd.Init(arg...)
 
 	bs := build.NewBuildSteps(
-		maven.New(),
-		maven.NewProd(),
+		append(maven.Steps(container.GetBuild()),
 		sonarcloud.New(),
 		trivy.New(),
-		github.New(),
+		github.New())...,
 	)
 
 	cmd.InitBuildSteps(bs)
 	err := cmd.Execute()
 	if err != nil {
-		fmt.Printf("Main Error: %v", err)
+		slog.Error("Main Error", "error", err)
 		os.Exit(1)
 	}
 }
