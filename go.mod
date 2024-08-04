@@ -3,7 +3,7 @@ module github.com/containifyci/java
 go 1.22.5
 
 require (
-	github.com/containifyci/engine-ci v0.3.1
+	github.com/containifyci/engine-ci v0.3.3
 	github.com/containifyci/engine-ci/protos2 v0.2.4 // indirect
 )
 
