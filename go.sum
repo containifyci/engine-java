@@ -68,8 +68,8 @@ github.com/containers/psgo v1.9.0 h1:eJ74jzSaCHnWt26OlKZROSyUyRcGDf+gYBdXnxrMW4g
 github.com/containers/psgo v1.9.0/go.mod h1:0YoluUm43Mz2UnBIh1P+6V6NWcbpTL5uRtXyOcH0B5A=
 github.com/containers/storage v1.55.0 h1:wTWZ3YpcQf1F+dSP4KxG9iqDfpQY1otaUXjPpffuhgg=
 github.com/containers/storage v1.55.0/go.mod h1:28cB81IDk+y7ok60Of6u52RbCeBRucbFOeLunhER1RQ=
-github.com/containifyci/engine-ci v0.3.1 h1:bQHGOw71ZSyNMrq7R9zs0WlpU9zVTRUH81ZkH83GtAQ=
-github.com/containifyci/engine-ci v0.3.1/go.mod h1:HP5jAKiJ85BfyfpsYzwgYnlyPT/9S1MWBzbK7PmpX1M=
+github.com/containifyci/engine-ci v0.3.3 h1:p6mt2fFLXJ5ZlCtEQdGam2b2aYn5p/hwhEBqvsCqgq4=
+github.com/containifyci/engine-ci v0.3.3/go.mod h1:HP5jAKiJ85BfyfpsYzwgYnlyPT/9S1MWBzbK7PmpX1M=
 github.com/containifyci/engine-ci/protos2 v0.2.4 h1:LV51janVvdk+plZ9bC/sX4luNjAegyP0xGgJhkdw3E0=
 github.com/containifyci/engine-ci/protos2 v0.2.4/go.mod h1:gGQmVinm/RgjrcjiffTcdkbrgUEudwzk3GQp+wKD700=
 github.com/coreos/go-systemd/v22 v22.5.1-0.20231103132048-7d375ecc2b09 h1:OoRAFlvDGCUqDLampLQjk0yeeSGdF9zzst/3G9IkBbc=
