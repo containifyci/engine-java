@@ -3,14 +3,14 @@ module github.com/containifyci/java
 go 1.22.5
 
 require (
-	github.com/containifyci/engine-ci v0.3.3
+	github.com/containifyci/engine-ci v0.4.0
 	github.com/containifyci/engine-ci/protos2 v0.2.4 // indirect
 )
 
 require (
 	github.com/containers/buildah v1.37.0 // indirect
 	github.com/containers/common v0.60.0 // indirect
-	github.com/containers/podman/v5 v5.1.2 // indirect
+	github.com/containers/podman/v5 v5.2.0 // indirect
 	github.com/docker/docker v27.1.1+incompatible // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/dusted-go/logging v1.2.2 // indirect
