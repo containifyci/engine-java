@@ -4,10 +4,12 @@ go 1.23
 
 toolchain go1.23.4
 
-require github.com/containifyci/engine-ci/client v0.9.0
+require (
+	github.com/containifyci/engine-ci/client v0.9.0
+	github.com/containifyci/engine-ci/protos2 v0.8.0
+)
 
 require (
-	github.com/containifyci/engine-ci/protos2 v0.8.0 // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/hashicorp/go-hclog v1.6.3 // indirect

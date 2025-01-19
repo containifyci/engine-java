@@ -29,7 +29,7 @@ func Steps(arg *container.Build) []build.Build {
 	switch from {
 	case "v17", "v21":
 		_from := from[1:]
-		steps = append(steps, New(_from), NewProd(_from))
+		steps = append(steps, New(arg, _from), NewProd(arg, _from))
 	default:
 		slog.Error("Unsupported maven from image", "from", from)
 		os.Exit(1)
