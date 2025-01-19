@@ -8,6 +8,7 @@ import (
 	"github.com/containifyci/engine-ci/pkg/container"
 	"github.com/containifyci/engine-ci/pkg/cri"
 	"github.com/containifyci/engine-ci/pkg/cri/critest"
+	"github.com/containifyci/engine-ci/pkg/logger"
 	"github.com/containifyci/engine-ci/pkg/network"
 	"github.com/stretchr/testify/assert"
 )
@@ -16,6 +17,8 @@ func InitTest(t *testing.T) *container.Build {
 	network.RuntimeOS = "darwin"
 	t.Setenv("SSH_AUTH_SOCK", "/tmp/ssh-auth.sock")
 	t.Setenv("CONTAINER_RUNTIME", "test")
+
+	logger.NewLogAggregator("")
 	arg := &container.Build{
 		App:    "test",
 		Custom: map[string][]string{"CONTAINIFYCI_HOST": {"localhost"}},
@@ -33,9 +36,9 @@ func InitTest(t *testing.T) *container.Build {
 }
 
 func TestNew(t *testing.T) {
-	InitTest(t)
+	build := InitTest(t)
 
-	mc := New("17")
+	mc := New(build, "17")
 	assert.Equal(t, "maven", mc.Name())
 	assert.False(t, mc.IsAsync())
 	assert.Equal(t, "test-image", mc.Image)
@@ -44,18 +47,18 @@ func TestNew(t *testing.T) {
 }
 
 func TestNewProd(t *testing.T) {
-	InitTest(t)
+	build := InitTest(t)
 
-	mc := NewProd("17")
+	mc := NewProd(build, "17")
 	assert.Equal(t, "maven-prod", mc.Name())
 	assert.False(t, mc.IsAsync())
 	assert.Equal(t, []string{"registry.access.redhat.com/ubi8/openjdk-17:latest"}, mc.Images())
 }
 
 func TestPull(t *testing.T) {
-	InitTest(t)
+	build := InitTest(t)
 
-	mc := New("17")
+	mc := New(build, "17")
 	err := mc.Pull()
 	assert.NoError(t, err)
 
@@ -80,7 +83,7 @@ func TestBuildLinuxPodman(t *testing.T) {
 	arg.Platform.Host.OS = "linux"
 	arg.Runtime = "podman"
 
-	mc := New("17")
+	mc := New(arg, "17")
 	err := mc.Build()
 	assert.NoError(t, err)
 
@@ -116,7 +119,7 @@ func TestBuildDarwinPodman(t *testing.T) {
 	arg.Platform.Host.OS = "darwin"
 	arg.Runtime = "podman"
 
-	mc := New("17")
+	mc := New(arg, "17")
 
 	cRuntime, err := cri.InitContainerRuntime()
 	assert.NoError(t, err)
@@ -162,7 +165,7 @@ func TestProd(t *testing.T) {
 	arg.Platform.Host.OS = "darwin"
 	arg.Runtime = "podman"
 
-	mc := NewProd("17")
+	mc := NewProd(arg, "17")
 
 	cRuntime, err := cri.InitContainerRuntime()
 	assert.NoError(t, err)

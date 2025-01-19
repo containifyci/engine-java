@@ -40,15 +40,15 @@ type MavenContainer struct {
 	*container.Container
 }
 
-func New(version string) *MavenContainer {
+func New(build *container.Build, version string) *MavenContainer {
 	return &MavenContainer{
-		App:       container.GetBuild().App,
-		Container: container.New(container.BuildEnv),
-		Image:     container.GetBuild().Image,
-		Folder:    container.GetBuild().Folder,
-		ImageTag:  container.GetBuild().ImageTag,
-		Platform:  container.GetBuild().Platform,
-		Version:  version,
+		App:       build.App,
+		Container: container.New(*build),
+		Image:     build.Image,
+		Folder:    build.Folder,
+		ImageTag:  build.ImageTag,
+		Platform:  build.Platform,
+		Version:   version,
 	}
 }
 
@@ -102,8 +102,8 @@ func (c *MavenContainer) MavenImage() string {
 	}
 	tag := ComputeChecksum(dockerFile)
 	image := fmt.Sprintf("maven-3-eclipse-temurin-%s-alpine", c.Version)
-	return utils.ImageURI(container.GetBuild().ContainifyRegistry, image, tag)
-	// return fmt.Sprintf("%s/%s/%s:%s", container.GetBuild().Registry, "containifyci", "maven-3-eclipse-temurin-17-alpine", tag)
+	return utils.ImageURI(c.GetBuild().ContainifyRegistry, image, tag)
+	// return fmt.Sprintf("%s/%s/%s:%s", build.Registry, "containifyci", "maven-3-eclipse-temurin-17-alpine", tag)
 }
 
 func (c *MavenContainer) BuildMavenImage() error {
@@ -116,7 +116,7 @@ func (c *MavenContainer) BuildMavenImage() error {
 		os.Exit(1)
 	}
 
-	platforms := types.GetPlatforms(container.GetBuild().Platform)
+	platforms := types.GetPlatforms(c.GetBuild().Platform)
 	slog.Info("Building intermediate image", "image", image, "platforms", platforms)
 
 	err = c.Container.BuildIntermidiateContainer(image, dockerFile, platforms...)
@@ -134,7 +134,7 @@ func (c *MavenContainer) Address() *network.Address {
 func (c *MavenContainer) Build() error {
 	imageTag := c.MavenImage()
 
-	ssh, err := network.SSHForward()
+	ssh, err := network.SSHForward(*c.GetBuild())
 	if err != nil {
 		slog.Error("Failed to forward SSH", "error", err)
 		os.Exit(1)
@@ -144,14 +144,14 @@ func (c *MavenContainer) Build() error {
 	opts.Image = imageTag
 	opts.Env = append(opts.Env, []string{
 		"MAVEN_OPTS=-Xms512m -Xmx512m -XX:MaxDirectMemorySize=512m",
-		fmt.Sprintf("CONTAINIFYCI_HOST=%s", getContainifyHost()),
+		fmt.Sprintf("CONTAINIFYCI_HOST=%s", getContainifyHost(c.GetBuild())),
 	}...)
 
 	// On MacOS, we need to set a special docker host so that the testcontainers can access the host
 	if c.Platform.Host.OS == "darwin" {
 		opts.Env = append(opts.Env, []string{
-			fmt.Sprintf("TC_HOST=%s", c.Address().ForContainerDefault()),
-			fmt.Sprintf("TESTCONTAINERS_HOST_OVERRIDE=%s", c.Address().ForContainerDefault()),
+			fmt.Sprintf("TC_HOST=%s", c.Address().ForContainerDefault(c.GetBuild())),
+			fmt.Sprintf("TESTCONTAINERS_HOST_OVERRIDE=%s", c.Address().ForContainerDefault(c.GetBuild())),
 		}...)
 	}
 
@@ -175,9 +175,9 @@ func (c *MavenContainer) Build() error {
 	opts.CPU = uint64(2048)
 
 	opts = ssh.Apply(&opts)
-	opts = utils.ApplySocket(container.GetBuild().Runtime, &opts)
+	opts = utils.ApplySocket(c.GetBuild().Runtime, &opts)
 
-	if container.GetBuild().Runtime == utils.Podman {
+	if c.GetBuild().Runtime == utils.Podman {
 		//https://stackoverflow.com/questions/71549856/testcontainers-with-podman-in-java-tests
 		opts.Env = append(opts.Env, []string{
 			"DOCKER_HOST=unix://var/run/podman.sock",
@@ -204,9 +204,9 @@ func (c *MavenContainer) Build() error {
 	return err
 }
 
-//TODO should be moved to the engine-ci itself.
-func getContainifyHost() string {
-	if v, ok := container.GetBuild().Custom["CONTAINIFYCI_HOST"]; ok {
+// TODO should be moved to the engine-ci itself.
+func getContainifyHost(build *container.Build) string {
+	if v, ok := build.Custom["CONTAINIFYCI_HOST"]; ok {
 		return v[0]
 	}
 	return ""
@@ -214,7 +214,7 @@ func getContainifyHost() string {
 
 func (c *MavenContainer) BuildScript() string {
 	// Create a temporary script in-memory
-	return Script(NewBuildScript(c.Container.Verbose, getContainifyHost()))
+	return Script(NewBuildScript(c.Container.Verbose, getContainifyHost(c.GetBuild())))
 }
 
 type MavenBuild struct {
@@ -240,8 +240,8 @@ func (g MavenBuild) IsAsync() bool {
 	return g.async
 }
 
-func NewProd(version string) build.Build {
-	container := New(version)
+func NewProd(arg *container.Build, version string) build.Build {
+	container := New(arg, version)
 	return MavenBuild{
 		rf: func() error {
 			return container.Prod()
@@ -300,7 +300,7 @@ func (c *MavenContainer) Prod() error {
 		os.Exit(1)
 	}
 
-	imageUri := utils.ImageURI(container.GetBuild().Registry, c.Image, c.ImageTag)
+	imageUri := utils.ImageURI(c.GetBuild().Registry, c.Image, c.ImageTag)
 	err = c.Container.Push(imageId, imageUri)
 	if err != nil {
 		slog.Error("Failed to push image: %s", "error", err)
