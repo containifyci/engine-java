@@ -9,7 +9,17 @@ import (
 	"os"
 
 	"github.com/containifyci/engine-ci/client/pkg/build"
+	"github.com/containifyci/engine-ci/protos2"
 )
+
+func registryAuth() map[string]*protos2.ContainerRegistry {
+	return map[string]*protos2.ContainerRegistry{
+		"docker.io": {
+			Username: "env:DOCKER_USER",
+			Password: "env:DOCKER_TOKEN",
+		},
+	}
+}
 
 func main() {
 	os.Chdir("..")
@@ -19,5 +29,6 @@ func main() {
 	opts.Properties = map[string]*build.ListValue{
 		"tags": build.NewList("containers_image_openpgp"),
 	}
+	opts.Registries = registryAuth()
 	build.Serve(opts)
 }

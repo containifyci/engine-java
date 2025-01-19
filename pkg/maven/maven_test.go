@@ -19,7 +19,7 @@ func InitTest(t *testing.T) *container.Build {
 	arg := &container.Build{
 		App:    "test",
 		Custom: map[string][]string{"CONTAINIFYCI_HOST": {"localhost"}},
-		Image: "test-image",
+		Image:  "test-image",
 	}
 	arg.Defaults()
 	container.NewBuild(arg)
@@ -56,7 +56,8 @@ func TestPull(t *testing.T) {
 	InitTest(t)
 
 	mc := New("17")
-	mc.Pull()
+	err := mc.Pull()
+	assert.NoError(t, err)
 
 	cRuntime, err := cri.InitContainerRuntime()
 	assert.NoError(t, err)
@@ -80,7 +81,8 @@ func TestBuildLinuxPodman(t *testing.T) {
 	arg.Runtime = "podman"
 
 	mc := New("17")
-	mc.Build()
+	err := mc.Build()
+	assert.NoError(t, err)
 
 	cRuntime, err := cri.InitContainerRuntime()
 	assert.NoError(t, err)
@@ -122,7 +124,8 @@ func TestBuildDarwinPodman(t *testing.T) {
 	if v, ok := cRuntime.(*critest.MockContainerManager); ok {
 		v.Errors["containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d"] = errors.New("image not found")
 
-		mc.Run()
+		err := mc.Run()
+		assert.NoError(t, err)
 
 		img := "containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d"
 		assert.Len(t, v.ContainerLogsEntries[img], 2)
@@ -165,7 +168,8 @@ func TestProd(t *testing.T) {
 	assert.NoError(t, err)
 
 	if v, ok := cRuntime.(*critest.MockContainerManager); ok {
-		mc.Run()
+		err := mc.Run()
+		assert.NoError(t, err)
 
 		img := "registry.access.redhat.com/ubi8/openjdk-17:latest"
 		assert.Len(t, v.ContainerLogsEntries[img], 3)
