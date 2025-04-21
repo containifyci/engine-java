@@ -1,6 +1,7 @@
 module github.com/containifyci/java
 
-go 1.23
+go 1.24.2
+
 require (
 	github.com/containifyci/engine-ci v0.16.0
 	github.com/containifyci/engine-ci/protos2 v0.10.0 // indirect
