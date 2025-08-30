@@ -23,7 +23,7 @@ func registryAuth() map[string]*protos2.ContainerRegistry {
 
 func main() {
 	os.Chdir("..")
-	opts := build.NewGoServiceBuild("containifyci-java")
+	opts := build.NewGoLibraryBuild("containifyci-java")
 	opts.Verbose = false
 	opts.File = "main.go"
 	opts.Properties = map[string]*build.ListValue{
