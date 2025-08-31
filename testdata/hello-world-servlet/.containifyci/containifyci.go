@@ -15,21 +15,22 @@ import (
 func registryAuth() map[string]*protos2.ContainerRegistry {
 	return map[string]*protos2.ContainerRegistry{
 		"docker.io": {
-			Username: "env:DOCKER_USER",
-			Password: "env:DOCKER_TOKEN",
+			Username: "containifyci",
+			Password: "env:CONTAINIFYCI_DOCKER_TOKEN",
 		},
 	}
 }
 
 func main() {
-	os.Chdir("..")
-	opts := build.NewGoLibraryBuild("containifyci-java")
+	os.Chdir("../")
+	opts := build.NewMavenLibraryBuild("hello-world-servlet")
 	opts.Verbose = false
-	opts.File = "main.go"
+	opts.File = "target/hello-world-servlet.war"
+	//TODO: adjust the registry to your own container registry
 	opts.Properties = map[string]*build.ListValue{
-		"tags":       build.NewList("containers_image_openpgp"),
-		"goreleaser": build.NewList("true"),
+		"push": build.NewList("false"),
 	}
-	// opts.Registries = registryAuth()
+	opts.Registry = "containifyci"
+	opts.Registries = registryAuth()
 	build.Serve(opts)
 }

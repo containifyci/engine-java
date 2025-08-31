@@ -10,10 +10,13 @@ jobs:
     secrets: inherit
     strategy:
       matrix:
-        runtime: [docker, podman]
+        include:
+        - runtime: docker
+          is_uploader: true
+        - runtime: podman
+          is_uploader: false
     permissions:
       contents: write # for checkout
-      id-token: write # for authenticating to Google Cloud Platform
       pull-requests: write # for updating pr
     with:
       dockerhub_user: "containifyci"
@@ -21,3 +24,36 @@ jobs:
       install_binary: true
       remote_debug: true
       remote_debug_user: "fr12k"
+      upload_artifacts: ${{ matrix.is_uploader }}
+
+  integration-test:
+    name: Integration Test ubuntu-latest
+    needs: build-go
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # for checkout
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: binaries
+
+      - name: Run integration tests
+        env:
+          RUN_INTEGRATION_TESTS: "true"
+          CONTAINIFYCI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONTAINIFYCI_DOCKER_TOKEN: ${{ secrets.CONTAINIFYCI_DOCKER_TOKEN }}
+        run: |
+          # Move binary to expected location
+          # mv ${{ matrix.binary }} containifyci-java-$(go env GOOS)-$(go env GOARCH)
+          chmod +x containifyci-java-$(go env GOOS)-$(go env GOARCH)
+          # Run the integration test
+          go test -tags=integration -v -timeout 5m integration_test.go
