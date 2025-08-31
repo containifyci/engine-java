@@ -2,8 +2,10 @@ module github.com/containifyci/java
 
 go 1.25.0
 
+// replace github.com/containifyci/engine-ci => ../engine-ci
+
 require (
-	github.com/containifyci/engine-ci v0.23.0
+	github.com/containifyci/engine-ci v0.24.2
 	github.com/stretchr/testify v1.11.1
 )
 

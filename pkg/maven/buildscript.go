@@ -24,13 +24,13 @@ func Script(bs *BuildScript) string {
 func simpleScript(bs *BuildScript) string {
 	return `#!/bin/sh
 set -xe
-./mvnw --batch-mode package
+mvn --batch-mode package
 `
 }
 
 func verboseScript(bs *BuildScript) string {
 	return `#!/bin/sh
 set -xe
-./mvnw --batch-mode package -X
+mvn --batch-mode package -X
 `
 }

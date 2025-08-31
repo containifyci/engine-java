@@ -24,15 +24,15 @@ func main() {
 	slog.Info("Version", "version", v)
 
 	arg := cmd.GetBuild()
-	// // cmd.Init(arg)
+
+	bld := cmd.Init(arg[0].Builds[0])
 
 	bs := build.NewBuildSteps(
-		append(maven.Steps(arg[0].Builds[0]),
-			sonarcloud.New(*arg[0].Builds[0]),
-			trivy.New(*arg[0].Builds[0]),
-			github.New(*arg[0].Builds[0]))...,
+		append(maven.Steps(bld),
+			sonarcloud.New(*bld),
+			trivy.New(*bld),
+			github.New(*bld))...,
 	)
-
 	cmd.InitBuildSteps(bs)
 	err := cmd.Execute()
 	if err != nil {

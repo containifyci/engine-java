@@ -4,7 +4,18 @@ FROM eclipse-temurin:17-jdk-jammy
 # iproute2 needed for the testcontainers to work within a container (DIND)
 RUN apt update && \
   apt -y upgrade && \
-  apt -y install protobuf-compiler iproute2 && \
+  apt -y install protobuf-compiler iproute2 curl tar && \
   apt -y autoremove && \
   apt -y clean && \
   rm -rf /var/lib/apt/lists/*
+
+# Install Maven
+ARG MAVEN_VERSION=3.9.11
+
+RUN curl -fsSL https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+    | tar -xz -C /opt \
+  && mv /opt/apache-maven-${MAVEN_VERSION} /opt/maven \
+  && ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
+
+ENV MAVEN_HOME=/opt/maven \
+    MAVEN_CONFIG=/root/.m2

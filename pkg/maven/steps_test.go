@@ -16,7 +16,7 @@ func TestStepsv17(t *testing.T) {
 	images := append(steps[0].Images(), steps[1].Images()...)
 
 	assert.Equal(t, []string{"maven", "maven-prod"}, names)
-	assert.Equal(t, []string{"containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d", "registry.access.redhat.com/ubi8/openjdk-17:latest", "registry.access.redhat.com/ubi8/openjdk-17:latest"}, images)
+	assert.Equal(t, []string{"containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476", "tomcat:latest", "tomcat:latest"}, images)
 }
 
 func TestStepsv21(t *testing.T) {
@@ -29,7 +29,7 @@ func TestStepsv21(t *testing.T) {
 	images := append(steps[0].Images(), steps[1].Images()...)
 
 	assert.Equal(t, []string{"maven", "maven-prod"}, names)
-	assert.Equal(t, []string{"containifyci/maven-3-eclipse-temurin-21-alpine:98108b284d14233f76bb9ce91e7932734b135f899654e48306ab07e4ca3e35d8", "registry.access.redhat.com/ubi8/openjdk-21:latest", "registry.access.redhat.com/ubi8/openjdk-21:latest"}, images)
+	assert.Equal(t, []string{"containifyci/maven-3-eclipse-temurin-21-alpine:889a67acb64eb60e00023503d6337c5455d2b4086d194103bd83a801dc39ec52", "tomcat:latest", "tomcat:latest"}, images)
 }
 
 func TestStepsDefault(t *testing.T) {
@@ -41,7 +41,7 @@ func TestStepsDefault(t *testing.T) {
 	images := append(steps[0].Images(), steps[1].Images()...)
 
 	assert.Equal(t, []string{"maven", "maven-prod"}, names)
-	assert.Equal(t, []string{"containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d", "registry.access.redhat.com/ubi8/openjdk-17:latest", "registry.access.redhat.com/ubi8/openjdk-17:latest"}, images)
+	assert.Equal(t, []string{"containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476", "tomcat:latest", "tomcat:latest"}, images)
 }
 
 func TestStepsUnknown(t *testing.T) {
