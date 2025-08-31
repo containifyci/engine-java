@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	ProdImage     = "registry.access.redhat.com/ubi8/openjdk-%s:latest"
+	ProdImage     = "tomcat:latest"
 	CacheLocation = "/root/.m2/"
 )
 
@@ -29,26 +29,33 @@ const (
 var f embed.FS
 
 type MavenContainer struct {
-	App      string
-	File     string
-	Folder   string
-	Image    string
-	ImageTag string
-	Platform types.Platform
+	App       string
+	File      u.SrcFile
+	Folder    string
+	Image     string
+	ImageTag  string
+	Platform  types.Platform
+	ProdImage string
 
 	Version string
 	*container.Container
 }
 
 func New(build *container.Build, version string) *MavenContainer {
+	prodImage := build.Custom.String("image")
+	if prodImage == "" {
+		prodImage = ProdImage
+	}
 	return &MavenContainer{
 		App:       build.App,
 		Container: container.New(*build),
 		Image:     build.Image,
 		Folder:    build.Folder,
+		File:      u.SrcFile(build.File),
 		ImageTag:  build.ImageTag,
 		Platform:  build.Platform,
 		Version:   version,
+		ProdImage: prodImage,
 	}
 }
 
@@ -80,11 +87,11 @@ func CacheFolder() string {
 }
 
 func (c *MavenContainer) Pull() error {
-	return c.Container.Pull(fmt.Sprintf(ProdImage, c.Version))
+	return c.Container.Pull(c.ProdImage)
 }
 
 func (c *MavenContainer) Images() []string {
-	return []string{c.MavenImage(), fmt.Sprintf(ProdImage, c.Version)}
+	return []string{c.MavenImage(), c.ProdImage}
 }
 
 // TODO: provide a shorter checksum
@@ -103,7 +110,6 @@ func (c *MavenContainer) MavenImage() string {
 	tag := ComputeChecksum(dockerFile)
 	image := fmt.Sprintf("maven-3-eclipse-temurin-%s-alpine", c.Version)
 	return utils.ImageURI(c.GetBuild().ContainifyRegistry, image, tag)
-	// return fmt.Sprintf("%s/%s/%s:%s", build.Registry, "containifyci", "maven-3-eclipse-temurin-17-alpine", tag)
 }
 
 func (c *MavenContainer) BuildMavenImage() error {
@@ -247,22 +253,16 @@ func NewProd(arg *container.Build, version string) build.Build {
 			return container.Prod()
 		},
 		name:   "maven-prod",
-		images: []string{fmt.Sprintf(ProdImage, version)},
+		images: []string{container.ProdImage},
 		async:  false,
 	}
 }
 
 func (c *MavenContainer) Prod() error {
 	opts := types.ContainerConfig{}
-	opts.Image = fmt.Sprintf(ProdImage, c.Version)
-	opts.Env = []string{
-		"JAVA_OPTS=-javaagent:/deployments/dd-java-agent.jar -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager",
-		"JAVA_APP_JAR=/deployments/quarkus-run.jar",
-	}
+	opts.Image = c.ProdImage
 	opts.Platform = types.AutoPlatform
 	opts.Cmd = []string{"sleep", "300"}
-	opts.User = "185"
-	opts.WorkingDir = "/src"
 
 	err := c.Create(opts)
 	if err != nil {
@@ -276,19 +276,13 @@ func (c *MavenContainer) Prod() error {
 		os.Exit(1)
 	}
 
-	err = c.Exec("curl", "-Lo", "/deployments/dd-java-agent.jar", "https://dtdg.co/latest-java-tracer")
+	err = c.CopyFileTo(c.File.Host(), "/usr/local/tomcat/webapps/jpetstore.war")
 	if err != nil {
-		slog.Error("Failed to execute command: %s", "error", err)
+		slog.Error("Failed to copy file to container", "error", err, "file", c.File)
 		os.Exit(1)
 	}
 
-	err = c.CopyDirectoryTo(c.Folder, "/deployments")
-	if err != nil {
-		slog.Error("Failed to copy directory to container: %s", "error", err)
-		os.Exit(1)
-	}
-
-	imageId, err := c.Commit(fmt.Sprintf("%s:%s", c.Image, c.ImageTag), "Created from container", "CMD [\"/usr/local/s2i/run\"]", "USER 185")
+	imageId, err := c.Commit(fmt.Sprintf("%s:%s", c.Image, c.ImageTag), "Created from container", "CMD [\"catalina.sh\", \"run\"]")
 	if err != nil {
 		slog.Error("Failed to commit container: %s", "error", err)
 		os.Exit(1)

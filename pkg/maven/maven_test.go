@@ -11,6 +11,7 @@ import (
 	"github.com/containifyci/engine-ci/pkg/logger"
 	"github.com/containifyci/engine-ci/pkg/network"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func InitTest(t *testing.T) *container.Build {
@@ -43,7 +44,7 @@ func TestNew(t *testing.T) {
 	assert.False(t, mc.IsAsync())
 	assert.Equal(t, "test-image", mc.Image)
 	assert.Equal(t, "17", mc.Version)
-	assert.Equal(t, []string{"containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d", "registry.access.redhat.com/ubi8/openjdk-17:latest"}, mc.Images())
+	assert.Equal(t, []string{"containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476", "tomcat:latest"}, mc.Images())
 }
 
 func TestNewProd(t *testing.T) {
@@ -52,7 +53,7 @@ func TestNewProd(t *testing.T) {
 	mc := NewProd(build, "17")
 	assert.Equal(t, "maven-prod", mc.Name())
 	assert.False(t, mc.IsAsync())
-	assert.Equal(t, []string{"registry.access.redhat.com/ubi8/openjdk-17:latest"}, mc.Images())
+	assert.Equal(t, []string{"tomcat:latest"}, mc.Images())
 }
 
 func TestPull(t *testing.T) {
@@ -66,7 +67,7 @@ func TestPull(t *testing.T) {
 	assert.NoError(t, err)
 
 	if v, ok := cRuntime.(*critest.MockContainerManager); ok {
-		assert.Equal(t, "registry.access.redhat.com/ubi8/openjdk-17:latest pulled", v.ImagesLogEntries[0])
+		assert.Equal(t, "tomcat:latest pulled", v.ImagesLogEntries[0])
 	}
 }
 
@@ -85,14 +86,14 @@ func TestBuildLinuxPodman(t *testing.T) {
 
 	mc := New(arg, "17")
 	err := mc.Build()
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	cRuntime, err := cri.InitContainerRuntime()
 	assert.NoError(t, err)
 
 	if v, ok := cRuntime.(*critest.MockContainerManager); ok {
-		img := "containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d"
-		assert.Len(t, v.ContainerLogsEntries[img], 2)
+		img := "containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476"
+		require.Len(t, v.ContainerLogsEntries[img], 2)
 		assert.Equal(t, []string{"container starting", "container running"}, v.ContainerLogsEntries[img])
 
 		assert.Equal(t, "started", v.GetContainerByImage(img).State)
@@ -125,20 +126,20 @@ func TestBuildDarwinPodman(t *testing.T) {
 	assert.NoError(t, err)
 
 	if v, ok := cRuntime.(*critest.MockContainerManager); ok {
-		v.Errors["containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d"] = errors.New("image not found")
+		v.Errors["containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476"] = errors.New("image not found")
 
 		err := mc.Run()
 		assert.NoError(t, err)
 
-		img := "containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d"
+		img := "containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476"
 		assert.Len(t, v.ContainerLogsEntries[img], 2)
 		assert.Equal(t, []string{"container starting", "container running"}, v.ContainerLogsEntries[img])
 
 		assert.Equal(t, "started", v.GetContainerByImage(img).State)
 		assert.Equal(t, []string{"sh", "/tmp/script.sh"}, v.GetContainerByImage(img).Opts.Cmd)
-		assert.Equal(t, "#!/bin/sh\nset -xe\n./mvnw --batch-mode package\n", v.GetContainerByImage(img).Opts.Script)
+		assert.Equal(t, "#!/bin/sh\nset -xe\nmvn --batch-mode package\n", v.GetContainerByImage(img).Opts.Script)
 		assert.Equal(t, "/src", v.GetContainerByImage(img).Opts.WorkingDir)
-		assert.Equal(t, "containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d", v.GetContainerByImage(img).Opts.Image)
+		assert.Equal(t, "containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476", v.GetContainerByImage(img).Opts.Image)
 		assert.Equal(t, int64(4073741824), v.GetContainerByImage(img).Opts.Memory)
 		assert.Equal(t, uint64(2048), v.GetContainerByImage(img).Opts.CPU)
 
@@ -149,16 +150,16 @@ func TestBuildDarwinPodman(t *testing.T) {
 
 		//expect 3 images opnejdk image and maven-3-eclipse-temurin-17-alpine twice for both platforms amd64 and arm64
 		assert.Len(t, v.Images, 3)
-		assert.NotNil(t, v.Images["registry.access.redhat.com/ubi8/openjdk-17:latest"])
-		assert.Equal(t, "linux/amd64", v.Images["containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d-linux/amd64"].Opts.Platform.String())
-		assert.Equal(t, "linux/arm64", v.Images["containifyci/maven-3-eclipse-temurin-17-alpine:214f702cd3dee211717ca17936aca88df6913e1db40f822ef9918e4369ea927d-linux/arm64"].Opts.Platform.String())
+		assert.NotNil(t, v.Images["tomcat:latest"])
+		assert.Equal(t, "linux/amd64", v.Images["containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476-linux/amd64"].Opts.Platform.String())
+		assert.Equal(t, "linux/arm64", v.Images["containifyci/maven-3-eclipse-temurin-17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476-linux/arm64"].Opts.Platform.String())
 	}
 }
 
 func TestProd(t *testing.T) {
 	expectedEnvs := []string{
-		"JAVA_OPTS=-javaagent:/deployments/dd-java-agent.jar -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager",
-		"JAVA_APP_JAR=/deployments/quarkus-run.jar",
+		// "JAVA_OPTS=-javaagent:/deployments/dd-java-agent.jar -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager",
+		// "JAVA_APP_JAR=/deployments/quarkus-run.jar",
 	}
 
 	arg := InitTest(t)
@@ -174,15 +175,13 @@ func TestProd(t *testing.T) {
 		err := mc.Run()
 		assert.NoError(t, err)
 
-		img := "registry.access.redhat.com/ubi8/openjdk-17:latest"
+		img := "tomcat:latest"
 		assert.Len(t, v.ContainerLogsEntries[img], 3)
 		assert.Equal(t, []string{"container starting", "container running", "container stopped"}, v.ContainerLogsEntries[img])
 
 		assert.Equal(t, "stopped", v.GetContainerByImage(img).State)
 		assert.Equal(t, []string{"sleep", "300"}, v.GetContainerByImage(img).Opts.Cmd)
-		assert.Equal(t, "185", v.GetContainerByImage(img).Opts.User)
-		assert.Equal(t, "/src", v.GetContainerByImage(img).Opts.WorkingDir)
-		assert.Equal(t, "registry.access.redhat.com/ubi8/openjdk-17:latest", v.GetContainerByImage(img).Opts.Image)
+		assert.Equal(t, "tomcat:latest", v.GetContainerByImage(img).Opts.Image)
 
 		fmt.Printf("Envs %+v\n", v.GetContainerByImage(img).Opts.Env)
 		for _, env := range expectedEnvs {
