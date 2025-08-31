@@ -49,6 +49,7 @@ jobs:
       - name: Run integration tests
         env:
           RUN_INTEGRATION_TESTS: "true"
+          CONTAINIFYCI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Move binary to expected location
           # mv ${{ matrix.binary }} containifyci-java-$(go env GOOS)-$(go env GOARCH)

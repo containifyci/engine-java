@@ -13,10 +13,13 @@ import (
 
 func main() {
 	os.Chdir("../")
-	opts := build.NewMavenLibraryBuild("hello-world-servlet")
+	opts := build.NewMavenServiceBuild("hello-world-servlet")
 	opts.Verbose = false
 	opts.File = "target/hello-world-servlet.war"
 	//TODO: adjust the registry to your own container registry
+	opts.Properties = map[string]*build.ListValue{
+		"push": build.NewList("false"),
+	}
 	opts.Registry = "containifyci"
 	build.Serve(opts)
 }

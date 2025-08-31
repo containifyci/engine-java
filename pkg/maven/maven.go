@@ -295,6 +295,11 @@ func (c *MavenContainer) Prod() error {
 		os.Exit(1)
 	}
 
+	push := c.GetBuild().Custom.Bool("push", true)
+	if !push {
+		slog.Info("Skipping image push", "image", c.Image, "tag", c.ImageTag)
+		return nil
+	}
 	imageUri := utils.ImageURI(c.GetBuild().Registry, c.Image, c.ImageTag)
 	err = c.Push(imageId, imageUri)
 	if err != nil {

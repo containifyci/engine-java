@@ -30,6 +30,6 @@ func main() {
 		"tags":       build.NewList("containers_image_openpgp"),
 		"goreleaser": build.NewList("true"),
 	}
-	opts.Registries = registryAuth()
+	// opts.Registries = registryAuth()
 	build.Serve(opts)
 }
