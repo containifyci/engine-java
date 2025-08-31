@@ -250,6 +250,10 @@ func NewProd(arg *container.Build, version string) build.Build {
 	container := New(arg, version)
 	return MavenBuild{
 		rf: func() error {
+			if arg.Image == "" {
+				slog.Info("No image name skip prod image creation")
+				return nil
+			}
 			return container.Prod()
 		},
 		name:   "maven-prod",
