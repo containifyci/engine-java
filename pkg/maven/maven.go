@@ -276,7 +276,8 @@ func (c *MavenContainer) Prod() error {
 		os.Exit(1)
 	}
 
-	err = c.CopyFileTo(c.File.Host(), "/usr/local/tomcat/webapps/jpetstore.war")
+	fileName := filepath.Base(c.File.Host())
+	err = c.CopyFileTo(c.File.Host(), "/usr/local/tomcat/webapps/"+fileName)
 	if err != nil {
 		slog.Error("Failed to copy file to container", "error", err, "file", c.File)
 		os.Exit(1)
