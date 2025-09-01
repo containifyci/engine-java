@@ -5,7 +5,7 @@ go 1.25.0
 // replace github.com/containifyci/engine-ci => ../engine-ci
 
 require (
-	github.com/containifyci/engine-ci v0.26.0
+	github.com/containifyci/engine-ci v0.26.1
 	github.com/stretchr/testify v1.11.1
 )
 
@@ -35,8 +35,8 @@ require (
 	github.com/containers/podman/v5 v5.4.2 // indirect
 	github.com/containers/psgo v1.9.0 // indirect
 	github.com/containers/storage v1.58.0 // indirect
-	github.com/containifyci/engine-ci/protos2 v0.15.2 // indirect
-	github.com/containifyci/go-self-update v0.2.2 // indirect
+	github.com/containifyci/engine-ci/protos2 v0.17.0 // indirect
+	github.com/containifyci/go-self-update v0.2.3 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.1-0.20231103132048-7d375ecc2b09 // indirect
 	github.com/cyberphone/json-canonicalization v0.0.0-20241213102144-19d51d7fe467 // indirect
 	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
