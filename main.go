@@ -16,7 +16,7 @@ var (
 	version = "dev"
 	commit  = "none"
 	date    = "unknown"
-	repo    = "github.com/containifyci/java"
+	repo    = "github.com/containifyci/engine-java"
 )
 
 func main() {
@@ -34,6 +34,17 @@ func main() {
 			github.New(*bld))...,
 	)
 	cmd.InitBuildSteps(bs)
+
+	// Configure the update command for your binary
+	cmd.ConfigureUpdate(
+		"engine-java",  // Your binary name
+		"containifyci", // Your GitHub organization
+		"engine-java",  // Your GitHub repository
+	)
+
+	// Set version info (optional but recommended)
+	cmd.SetVersionInfo(version, commit, date, repo)
+
 	err := cmd.Execute()
 	if err != nil {
 		slog.Error("Main Error", "error", err)
