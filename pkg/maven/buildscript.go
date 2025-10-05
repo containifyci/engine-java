@@ -1,16 +1,20 @@
 package maven
 
+import "fmt"
+
 type Image string
 
 type BuildScript struct {
 	Verbose bool
-	host    string
+	Folder  string
+	Host    string
 }
 
-func NewBuildScript(verbose bool, host string) *BuildScript {
+func NewBuildScript(verbose bool, folder, host string) *BuildScript {
 	return &BuildScript{
 		Verbose: verbose,
-		host:    host,
+		Folder:  folder,
+		Host:    host,
 	}
 }
 
@@ -22,15 +26,17 @@ func Script(bs *BuildScript) string {
 }
 
 func simpleScript(bs *BuildScript) string {
-	return `#!/bin/sh
+	return fmt.Sprintf(`#!/bin/sh
 set -xe
+cd %s
 mvn --batch-mode package
-`
+`, bs.Folder)
 }
 
 func verboseScript(bs *BuildScript) string {
-	return `#!/bin/sh
+	return fmt.Sprintf(`#!/bin/sh
 set -xe
+cd %s
 mvn --batch-mode package -X
-`
+`, bs.Folder)
 }

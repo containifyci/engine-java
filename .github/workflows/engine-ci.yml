@@ -32,6 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # for checkout
+      pull-requests: write # for commenting on pr
     steps:
       - name: Checkout code
         uses: actions/checkout@v5

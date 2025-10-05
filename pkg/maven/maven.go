@@ -21,8 +21,9 @@ import (
 )
 
 const (
-	ProdImage     = "tomcat:latest"
-	CacheLocation = "/root/.m2/"
+	PRODIMAGE             = "tomcat:latest"
+	CacheLocation         = "/root/.m2/"
+	DEFAULT_MAVEN_VERSION = "v17"
 )
 
 //go:embed Dockerfile.*
@@ -41,11 +42,28 @@ type MavenContainer struct {
 	*container.Container
 }
 
-func New(build *container.Build, version string) *MavenContainer {
-	prodImage := build.Custom.String("image")
-	if prodImage == "" {
-		prodImage = ProdImage
+func New() build.BuildStepv2 {
+	return build.Stepper{
+		RunFn: func(build container.Build) error {
+			container := new(&build)
+			return container.Run()
+		},
+		MatchedFn: Matches,
+		ImagesFn:  Images,
+		Name_:     "gorelease",
+		Async_:    false,
 	}
+}
+
+func Matches(build container.Build) bool {
+	if build.BuildType != container.Maven {
+		return false
+	}
+	version := GetVersion(build)
+	return version == "v17" || version == "v21"
+}
+
+func new(build *container.Build) *MavenContainer {
 	return &MavenContainer{
 		App:       build.App,
 		Container: container.New(*build),
@@ -54,8 +72,8 @@ func New(build *container.Build, version string) *MavenContainer {
 		File:      u.SrcFile(build.File),
 		ImageTag:  build.ImageTag,
 		Platform:  build.Platform,
-		Version:   version,
-		ProdImage: prodImage,
+		ProdImage: ProdImage(*build),
+		Version:   GetVersion(*build),
 	}
 }
 
@@ -65,6 +83,18 @@ func (c *MavenContainer) IsAsync() bool {
 
 func (c *MavenContainer) Name() string {
 	return "maven"
+}
+
+func GetVersion(build container.Build) string {
+	var from string
+	if v, ok := build.Custom["from"]; ok {
+		slog.Info("Using custom build", "from", v[0])
+		from = v[0]
+	}
+	if from == "" {
+		from = DEFAULT_MAVEN_VERSION
+	}
+	return from
 }
 
 func CacheFolder() string {
@@ -90,8 +120,16 @@ func (c *MavenContainer) Pull() error {
 	return c.Container.Pull(c.ProdImage)
 }
 
-func (c *MavenContainer) Images() []string {
-	return []string{c.MavenImage(), c.ProdImage}
+func Images(build container.Build) []string {
+	return []string{MavenImage(build), ProdImage(build)}
+}
+
+func ProdImage(build container.Build) string {
+	prodImage := build.Custom.String("image")
+	if prodImage == "" {
+		prodImage = PRODIMAGE
+	}
+	return prodImage
 }
 
 // TODO: provide a shorter checksum
@@ -100,20 +138,20 @@ func ComputeChecksum(data []byte) string {
 	return hex.EncodeToString(hash[:])
 }
 
-func (c *MavenContainer) MavenImage() string {
-	fileName := fmt.Sprintf("Dockerfile.maven_%s-jdk-jammy", c.Version)
+func MavenImage(build container.Build) string {
+	fileName := fmt.Sprintf("Dockerfile.maven_%s-jdk-jammy", GetVersion(build))
 	dockerFile, err := f.ReadFile(fileName)
 	if err != nil {
 		slog.Error("Failed to read Dockerfile.maven", "error", err)
 		os.Exit(1)
 	}
 	tag := ComputeChecksum(dockerFile)
-	image := fmt.Sprintf("maven-3-eclipse-temurin-%s-alpine", c.Version)
-	return utils.ImageURI(c.GetBuild().ContainifyRegistry, image, tag)
+	image := fmt.Sprintf("maven-3-eclipse-temurin-%s-alpine", GetVersion(build))
+	return utils.ImageURI(build.ContainifyRegistry, image, tag)
 }
 
 func (c *MavenContainer) BuildMavenImage() error {
-	image := c.MavenImage()
+	image := MavenImage(*c.GetBuild())
 	fileName := fmt.Sprintf("Dockerfile.maven_%s-jdk-jammy", c.Version)
 	slog.Debug("Building maven image", "image", image, "fileName", fileName)
 	dockerFile, err := f.ReadFile(fileName)
@@ -138,7 +176,7 @@ func (c *MavenContainer) Address() *network.Address {
 }
 
 func (c *MavenContainer) Build() error {
-	imageTag := c.MavenImage()
+	imageTag := MavenImage(*c.GetBuild())
 
 	ssh, err := network.SSHForward(*c.GetBuild())
 	if err != nil {
@@ -220,45 +258,27 @@ func getContainifyHost(build *container.Build) string {
 
 func (c *MavenContainer) BuildScript() string {
 	// Create a temporary script in-memory
-	return Script(NewBuildScript(c.Verbose, getContainifyHost(c.GetBuild())))
+	return Script(NewBuildScript(c.Verbose, c.Folder, getContainifyHost(c.GetBuild())))
 }
 
-type MavenBuild struct {
-	rf     build.RunFunc
-	name   string
-	images []string
-	async  bool
-}
-
-func (g MavenBuild) Run() error {
-	return g.rf()
-}
-
-func (g MavenBuild) Name() string {
-	return g.name
-}
-
-func (g MavenBuild) Images() []string {
-	return g.images
-}
-
-func (g MavenBuild) IsAsync() bool {
-	return g.async
-}
-
-func NewProd(arg *container.Build, version string) build.Build {
-	container := New(arg, version)
-	return MavenBuild{
-		rf: func() error {
-			if arg.Image == "" {
+func NewProd() build.BuildStepv2 {
+	return build.Stepper{
+		RunFn: func(build container.Build) error {
+			c := new(&build)
+			if build.Image == "" {
 				slog.Info("No image name skip prod image creation")
 				return nil
 			}
-			return container.Prod()
+			return c.Prod()
 		},
-		name:   "maven-prod",
-		images: []string{container.ProdImage},
-		async:  false,
+		ImagesFn: func(build container.Build) []string {
+			return []string{ProdImage(build)}
+		},
+		MatchedFn: func(build container.Build) bool {
+			return build.BuildType == container.Maven
+		},
+		Name_:  "maven-prod",
+		Async_: false,
 	}
 }
 
