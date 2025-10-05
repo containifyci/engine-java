@@ -29,7 +29,10 @@ func main() {
 		oldFnc := command.RunE
 		// replace the handler, keep flags/persistent flags/subcommands
 		command.RunE = func(command *cobra.Command, args []string) error {
-			os.Setenv("CONTAINIFYCI_FILE", ".containifyci/containifyci.go")
+			err := os.Setenv("CONTAINIFYCI_FILE", ".containifyci/containifyci.go")
+			if err != nil {
+				return err
+			}
 
 			arg := cmd.GetBuild(cmd.RootArgs.Auto)
 
@@ -43,7 +46,7 @@ func main() {
 			// bs.AddToCategory(build.PostBuild, maven.NewProd(bld))
 
 			// Replace default Maven steps with enhanced versions from engine-java
-			err := bs.Replace("maven", maven.New())
+			err = bs.Replace("maven", maven.New())
 			if err != nil {
 				return err
 			}
