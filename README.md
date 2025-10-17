@@ -1,6 +1,6 @@
 # engine-java
 
-**engine-java** extends [engine-ci](https://github.com/containifyci/engine-ci) to provide first-class support for building Java applications using **Maven**.
+This is just an example how to extend the [engine-ci](https://github.com/containifyci/engine-ci) for other languages or how to customize it for your own needs and requirements.
 
 This repository adds Java-specific build logic and includes an integration test project to ensure end-to-end compatibility with the engine-ci build system.
 
@@ -37,7 +37,7 @@ The repository includes a small Java web app used for testing:
 
 ```bash
 testdata/hello-world-servlet/
-````
+```
 
 This sample project:
 
@@ -48,7 +48,7 @@ You can manually run the integration test locally to validate your setup.
 
 ---
 
-## ▶Running Locally
+## ▶ Running Locally
 
 Make sure you have [engine-java](https://github.com/containifyci/engine-java) installed.
 
@@ -66,49 +66,27 @@ This will automatically load engine-java and execute the Maven build steps defin
 
 ---
 
-## 🧱 Repository Structure
-
-```
-engine-java/
-├── build/                      # Java build logic extension for engine-ci
-├── testdata/
-│   └── hello-world-servlet/    # Sample Maven project for integration testing
-├── internal/
-│   └── ...                     # Internal utilities for engine-java
-└── README.md
-```
-
----
-
-## 🔧 Requirements
+## Requirements
 
 * Golang >= 1.25
 * Docker or Podman (for build isolation)
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome!
-If you want to add new Java build features or integrations, please open a pull request or start a discussion in the [engine-ci repo](https://github.com/containifyci/engine-ci/discussions).
+If you want to add new Java build features or integrations, please open a pull request in the [engine-java repo](https://github.com/containifyci/engine-java).
 
 ---
 
-## 📄 License
+## License
 
 Licensed under the [Apache 2.0 License](LICENSE).
 
 ---
 
-### 🌟 Part of the ContainifyCI Ecosystem
+### Part of the ContainifyCI Ecosystem
 
-* [engine-ci](https://github.com/containifyci/engine-ci) – Core build engine
-* [Engine Go](https://github.com/containifyci/engine-go) – Go build extension
+* [engine-ci](https://github.com/containifyci/engine-ci) – Core/Go build system
 * [engine-java](https://github.com/containifyci/engine-java) – Maven/Java build extension
-
-```
-
----
-
-Would you like me to include a short “example output” section (like a sample `engine-ci` log showing Maven build steps), or keep it concise and clean like above?
-```

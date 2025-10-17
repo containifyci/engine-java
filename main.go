@@ -19,6 +19,12 @@ var (
 
 func main() {
 	v := cmd.SetVersionInfo(version, commit, date, repo)
+	// Configure the update command for your binary
+	cmd.ConfigureUpdate(
+		"engine-java",  // Your binary name
+		"containifyci", // Your GitHub organization
+		"engine-java",  // Your GitHub repository
+	)
 	slog.Info("Version", "version", v)
 
 	// somewhere after your commands have been created (e.g. in init() of a package)
@@ -54,13 +60,6 @@ func main() {
 			if err != nil {
 				return err
 			}
-
-			// Configure the update command for your binary
-			cmd.ConfigureUpdate(
-				"engine-java",  // Your binary name
-				"containifyci", // Your GitHub organization
-				"engine-java",  // Your GitHub repository
-			)
 
 			// Set version info (optional but recommended)
 			cmd.SetVersionInfo(version, commit, date, repo)

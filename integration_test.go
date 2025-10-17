@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestBuildHelloWorldServlet tests that the containifyci-java binary can successfully
+// TestBuildHelloWorldServlet tests that the engine-java binary can successfully
 // build a simple Hello World Tomcat servlet project
 func TestBuildHelloWorldServlet(t *testing.T) {
 	// Skip if not running integration tests
@@ -28,7 +28,7 @@ func TestBuildHelloWorldServlet(t *testing.T) {
 	require.NoError(t, err, "Failed to get current working directory")
 
 	// Determine binary name based on OS and architecture
-	binaryName := fmt.Sprintf("containifyci-java-%s-%s", runtime.GOOS, runtime.GOARCH)
+	binaryName := fmt.Sprintf("engine-java-%s-%s", runtime.GOOS, runtime.GOARCH)
 	binaryPath := filepath.Join(cwd, binaryName)
 
 	// Check if pre-built binary exists, if not build it
@@ -60,7 +60,7 @@ func TestBuildHelloWorldServlet(t *testing.T) {
 	require.NoError(t, err)
 
 	// Run the binary to build the test project
-	t.Log("Running containifyci-java to build Hello World servlet...")
+	t.Log("Running engine-java to build Hello World servlet...")
 	cmd := exec.Command(binaryPath, "run")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
