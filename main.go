@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/containifyci/engine-ci/cmd"
-	"github.com/containifyci/java/pkg/maven"
+	"github.com/containifyci/engine-java/pkg/maven"
 	"github.com/spf13/cobra"
 )
 

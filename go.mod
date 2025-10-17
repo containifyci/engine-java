@@ -1,4 +1,4 @@
-module github.com/containifyci/java
+module github.com/containifyci/engine-java
 
 go 1.25.0
 
