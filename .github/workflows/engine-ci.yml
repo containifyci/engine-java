@@ -55,6 +55,6 @@ jobs:
         run: |
           # Move binary to expected location
           # mv ${{ matrix.binary }} containifyci-java-$(go env GOOS)-$(go env GOARCH)
-          chmod +x containifyci-java-$(go env GOOS)-$(go env GOARCH)
+          chmod +x engine-java-$(go env GOOS)-$(go env GOARCH)
           # Run the integration test
           go test -tags=integration -v -timeout 5m integration_test.go
