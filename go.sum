@@ -68,10 +68,10 @@ github.com/containers/psgo v1.9.0 h1:eJ74jzSaCHnWt26OlKZROSyUyRcGDf+gYBdXnxrMW4g
 github.com/containers/psgo v1.9.0/go.mod h1:0YoluUm43Mz2UnBIh1P+6V6NWcbpTL5uRtXyOcH0B5A=
 github.com/containers/storage v1.59.1 h1:11Zu68MXsEQGBBd+GadPrHPpWeqjKS8hJDGiAHgIqDs=
 github.com/containers/storage v1.59.1/go.mod h1:KoAYHnAjP3/cTsRS+mmWZGkufSY2GACiKQ4V3ZLQnR0=
-github.com/containifyci/engine-ci v0.31.10 h1:FGRrs6S49wlIY1x5RwML1sfL8Dc7RPQX3s0gthwm+10=
-github.com/containifyci/engine-ci v0.31.10/go.mod h1:z+nnNnbGEEWWivsIdMQVOGclFaK0wNzj7a9zRElB76c=
-github.com/containifyci/engine-ci/protos2 v0.19.0 h1:f8+Vd0mxoZCF0jdMD4p7Is3KLruNp4ttVuvPzXSTFsM=
-github.com/containifyci/engine-ci/protos2 v0.19.0/go.mod h1:NC/2krkw0xra0feaSyGMr+fhbt9UEfRD5jeHWrjm01g=
+github.com/containifyci/engine-ci v0.31.11 h1:aqWsz25gpF0WzDgbEsEXkYxQhrjlwqqJt7wUYxl1PMs=
+github.com/containifyci/engine-ci v0.31.11/go.mod h1:lF41L0rmR8ZaCM8BxJH7dFMwrjOveBKWKlBAGAtzedk=
+github.com/containifyci/engine-ci/protos2 v0.20.0 h1:16JbIMO7oUO3I5oHVDTY8YHyYuPg6X9g4qluucVALOI=
+github.com/containifyci/engine-ci/protos2 v0.20.0/go.mod h1:spULz5ykiGcGMRHB25/s4qrr41yoy3BR26WJZ0HY1ls=
 github.com/containifyci/go-self-update v0.2.4 h1:h1JWwVihXPMikn4MBQlYtU8Nc6e1hxRos5/y1KTzE0k=
 github.com/containifyci/go-self-update v0.2.4/go.mod h1:MG6yKTeEvk+znIyGt4NBrcvT9wquH18TqKT6W+0zJTE=
 github.com/coreos/go-systemd/v22 v22.6.0 h1:aGVa/v8B7hpb0TKl0MWoAavPDmHvobFe5R5zn0bCJWo=
@@ -544,8 +544,8 @@ google.golang.org/grpc v1.23.0/go.mod h1:Y5yQAOtifL1yxbo5wqy6BxZv8vAUGQwXBOALyac
 google.golang.org/grpc v1.25.1/go.mod h1:c3i+UQWmh7LiEpx4sFZnkU36qjEYZ0imhYfXVyQciAY=
 google.golang.org/grpc v1.27.0/go.mod h1:qbnxyOmOxrQa7FizSgH+ReBfzJrCY1pSN7KXBS8abTk=
 google.golang.org/grpc v1.33.2/go.mod h1:JMHMWHQWaTccqQQlmk3MJZS+GWXOdAesneDmEnv2fbc=
-google.golang.org/grpc v1.75.1 h1:/ODCNEuf9VghjgO3rqLcfg8fiOP0nSluljWFlDxELLI=
-google.golang.org/grpc v1.75.1/go.mod h1:JtPAzKiq4v1xcAB2hydNlWI2RnF85XXcV0mhKXr2ecQ=
+google.golang.org/grpc v1.76.0 h1:UnVkv1+uMLYXoIz6o7chp59WfQUYA2ex/BXQ9rHZu7A=
+google.golang.org/grpc v1.76.0/go.mod h1:Ju12QI8M6iQJtbcsV+awF5a4hfJMLi4X0JLo94ULZ6c=
 google.golang.org/protobuf v0.0.0-20200109180630-ec00e32a8dfd/go.mod h1:DFci5gLYBciE7Vtevhsrf46CRTquxDuWsQurQQe4oz8=
 google.golang.org/protobuf v0.0.0-20200221191635-4d8936d0db64/go.mod h1:kwYJMbMJ01Woi6D6+Kah6886xMZcty6N08ah7+eCXa0=
 google.golang.org/protobuf v0.0.0-20200228230310-ab0ca4ff8a60/go.mod h1:cfTl7dwQJ+fmap5saPgwCLgHXTUD7jkjRqWcaiX5VyM=
