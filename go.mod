@@ -5,8 +5,8 @@ go 1.25.0
 // replace github.com/containifyci/engine-ci => ../engine-ci
 
 require (
-	github.com/containifyci/engine-ci v0.33.0
-	github.com/spf13/cobra v1.10.1
+	github.com/containifyci/engine-ci v0.35.3
+	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
 )
 
@@ -30,7 +30,7 @@ require (
 	github.com/containers/ocicrypt v1.2.1 // indirect
 	github.com/containers/podman/v5 v5.7.0 // indirect
 	github.com/containers/psgo v1.9.1-0.20250826150930-4ae76f200c86 // indirect
-	github.com/containifyci/engine-ci/protos2 v0.20.1 // indirect
+	github.com/containifyci/engine-ci/protos2 v0.21.0 // indirect
 	github.com/containifyci/go-self-update v0.2.4 // indirect
 	github.com/coreos/go-systemd/v22 v22.6.0 // indirect
 	github.com/cyberphone/json-canonicalization v0.0.0-20241213102144-19d51d7fe467 // indirect
