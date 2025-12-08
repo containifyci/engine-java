@@ -53,10 +53,10 @@ github.com/containers/podman/v5 v5.7.0 h1:gz1LLHIdsoQZ5ZjgIoOpE+ROark0jHKlXPtKj3
 github.com/containers/podman/v5 v5.7.0/go.mod h1:u2YBChWXpDMHbV6ga78deseofCas/8bZilkZfQ2XGCo=
 github.com/containers/psgo v1.9.1-0.20250826150930-4ae76f200c86 h1:bYj0TVlkRZtMJYd6SbFOi1gjUJDJmVsYCpJla3URD7Y=
 github.com/containers/psgo v1.9.1-0.20250826150930-4ae76f200c86/go.mod h1:52GX23ST30pXpeviDvNpOCXoHqr+WJDv+7BjEH+AabY=
-github.com/containifyci/engine-ci v0.33.0 h1:Q0eL6GGHqUd2R3xEOeoFOx4GlcpYEyf/nF5ECUuLj0M=
-github.com/containifyci/engine-ci v0.33.0/go.mod h1:2rgmxzlZFqxHkrlX0KGuzkUXtawZyb3IQz1bkOZMXb8=
-github.com/containifyci/engine-ci/protos2 v0.20.1 h1:rQ22WwqBniVWDs81+PCrdqqGGUj+NuqgpF2StudjJXQ=
-github.com/containifyci/engine-ci/protos2 v0.20.1/go.mod h1:KmRvSjptuzkWoq32b/zm/LtNe0SVJ4rABUwu6g+7UoA=
+github.com/containifyci/engine-ci v0.35.3 h1:sVv9o2icUs8162usVyHziucbwxgwD4FVcsE3NUBs1Y4=
+github.com/containifyci/engine-ci v0.35.3/go.mod h1:y6X0MInXRMk0bcJdnmTJ+VvxzrxXLrw4T0Su2ih+jeM=
+github.com/containifyci/engine-ci/protos2 v0.21.0 h1:RE7rlp2DL1gskDO7L+tjBZNFrcIwlSDI1fx61Zm+khM=
+github.com/containifyci/engine-ci/protos2 v0.21.0/go.mod h1:KmRvSjptuzkWoq32b/zm/LtNe0SVJ4rABUwu6g+7UoA=
 github.com/containifyci/go-self-update v0.2.4 h1:h1JWwVihXPMikn4MBQlYtU8Nc6e1hxRos5/y1KTzE0k=
 github.com/containifyci/go-self-update v0.2.4/go.mod h1:MG6yKTeEvk+znIyGt4NBrcvT9wquH18TqKT6W+0zJTE=
 github.com/coreos/go-systemd/v22 v22.6.0 h1:aGVa/v8B7hpb0TKl0MWoAavPDmHvobFe5R5zn0bCJWo=
@@ -294,8 +294,8 @@ github.com/skeema/knownhosts v1.3.2 h1:EDL9mgf4NzwMXCTfaxSD/o/a5fxDw/xL9nkU28Jjd
 github.com/skeema/knownhosts v1.3.2/go.mod h1:bEg3iQAuw+jyiw+484wwFJoKSLwcfd7fqRy+N0QTiow=
 github.com/smallstep/pkcs7 v0.2.1 h1:6Kfzr/QizdIuB6LSv8y1LJdZ3aPSfTNhTLqAx9CTLfA=
 github.com/smallstep/pkcs7 v0.2.1/go.mod h1:RcXHsMfL+BzH8tRhmrF1NkkpebKpq3JEM66cOFxanf0=
-github.com/spf13/cobra v1.10.1 h1:lJeBwCfmrnXthfAupyUTzJ/J4Nc1RsHC/mSRU2dll/s=
-github.com/spf13/cobra v1.10.1/go.mod h1:7SmJGaTHFVBY0jW4NXGluQoLvhqFQM+6XSKD+P4XaB0=
+github.com/spf13/cobra v1.10.2 h1:DMTTonx5m65Ic0GOoRY2c16WCbHxOOw6xxezuLaBpcU=
+github.com/spf13/cobra v1.10.2/go.mod h1:7C1pvHqHw5A4vrJfjNwvOdzYu0Gml16OCs2GRiTUUS4=
 github.com/spf13/pflag v1.0.9/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
 github.com/spf13/pflag v1.0.10 h1:4EBh2KAYBwaONj6b2Ye1GiHfwjqyROoF4RwYO+vPwFk=
 github.com/spf13/pflag v1.0.10/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
