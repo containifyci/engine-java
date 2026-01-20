@@ -140,8 +140,9 @@ func TestBuildDarwinPodman(t *testing.T) {
 	if v, ok := cRuntime.(*critest.MockContainerManager); ok {
 		v.Errors["containifyci/maven-3-eclipse-temurin-v17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476"] = errors.New("image not found")
 
-		err := mc.Run()
+		id, err := mc.Run()
 		assert.NoError(t, err)
+		assert.NotEmpty(t, id)
 
 		img := "containifyci/maven-3-eclipse-temurin-v17-alpine:cdbe73779492603b08a3e880bf25754e3a8e865811c51c0b45e2c5edfc5a8476"
 		assert.Len(t, v.ContainerLogsEntries[img], 2)
@@ -179,8 +180,9 @@ func TestProd(t *testing.T) {
 	assert.NoError(t, err)
 
 	if v, ok := cRuntime.(*critest.MockContainerManager); ok {
-		err := mc.RunWithBuild(*arg)
+		id, err := mc.RunWithBuildV3(*arg)
 		assert.NoError(t, err)
+		assert.NotEmpty(t, id)
 
 		img := "tomcat:latest"
 		assert.Len(t, v.ContainerLogsEntries[img], 3)
