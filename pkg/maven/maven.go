@@ -42,9 +42,9 @@ type MavenContainer struct {
 	*container.Container
 }
 
-func New() build.BuildStepv2 {
+func New() build.BuildStepv3 {
 	return build.Stepper{
-		RunFn: func(build container.Build) error {
+		RunFnV3: func(build container.Build) (string, error) {
 			container := new(&build)
 			return container.Run()
 		},
@@ -261,13 +261,13 @@ func (c *MavenContainer) BuildScript() string {
 	return Script(NewBuildScript(c.Verbose, c.Folder, getContainifyHost(c.GetBuild())))
 }
 
-func NewProd() build.BuildStepv2 {
+func NewProd() build.BuildStepv3 {
 	return build.Stepper{
-		RunFn: func(build container.Build) error {
+		RunFnV3: func(build container.Build) (string, error) {
 			c := new(&build)
 			if build.Image == "" {
 				slog.Info("No image name skip prod image creation")
-				return nil
+				return "", nil
 			}
 			return c.Prod()
 		},
@@ -282,7 +282,7 @@ func NewProd() build.BuildStepv2 {
 	}
 }
 
-func (c *MavenContainer) Prod() error {
+func (c *MavenContainer) Prod() (string, error) {
 	opts := types.ContainerConfig{}
 	opts.Image = c.ProdImage
 	opts.Platform = types.AutoPlatform
@@ -322,7 +322,7 @@ func (c *MavenContainer) Prod() error {
 	push := c.GetBuild().Custom.Bool("push", true)
 	if !push {
 		slog.Info("Skipping image push", "image", c.Image, "tag", c.ImageTag)
-		return nil
+		return "", nil
 	}
 	imageUri := utils.ImageURI(c.GetBuild().Registry, c.Image, c.ImageTag)
 	err = c.Push(imageId, imageUri)
@@ -331,27 +331,27 @@ func (c *MavenContainer) Prod() error {
 		os.Exit(1)
 	}
 
-	return err
+	return c.ID, err
 }
 
-func (c *MavenContainer) Run() error {
+func (c *MavenContainer) Run() (string, error) {
 	err := c.Pull()
 	if err != nil {
 		slog.Error("Failed to pull base images: %s", "error", err)
-		return err
+		return "", err
 	}
 
 	err = c.BuildMavenImage()
 	if err != nil {
 		slog.Error("Failed to build go image: %s", "error", err)
-		return err
+		return "", err
 	}
 
 	err = c.Build()
 	slog.Info("Container created", "containerId", c.ID)
 	if err != nil {
 		slog.Error("Failed to create container: %s", "error", err)
-		return err
+		return "", err
 	}
-	return nil
+	return c.ID, nil
 }
