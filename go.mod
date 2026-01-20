@@ -5,7 +5,7 @@ go 1.25.5
 // replace github.com/containifyci/engine-ci => ../engine-ci
 
 require (
-	github.com/containifyci/engine-ci v0.37.4
+	github.com/containifyci/engine-ci v0.37.5
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
 )

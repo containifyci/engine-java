@@ -50,7 +50,7 @@ func New() build.BuildStepv3 {
 		},
 		MatchedFn: Matches,
 		ImagesFn:  Images,
-		Name_:     "gorelease",
+		Name_:     "maven",
 		Async_:    false,
 	}
 }

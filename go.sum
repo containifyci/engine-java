@@ -53,8 +53,8 @@ github.com/containers/podman/v5 v5.7.1 h1:rxt3Fl3JS85ZnWZU7jTqR9YOk9fYFqI/2Gy6UM
 github.com/containers/podman/v5 v5.7.1/go.mod h1:+3SYEQiTjid9pnoFMF8jKWVOymTzIQCFGDsZ28b5nqw=
 github.com/containers/psgo v1.9.1-0.20250826150930-4ae76f200c86 h1:bYj0TVlkRZtMJYd6SbFOi1gjUJDJmVsYCpJla3URD7Y=
 github.com/containers/psgo v1.9.1-0.20250826150930-4ae76f200c86/go.mod h1:52GX23ST30pXpeviDvNpOCXoHqr+WJDv+7BjEH+AabY=
-github.com/containifyci/engine-ci v0.37.4 h1:Zg8ldKfpWqhDsgfEvp4OHshtPlwvpQzsiOEjFrtYtpg=
-github.com/containifyci/engine-ci v0.37.4/go.mod h1:nRHSeQ4nKsDA58Xn40Ej8vaVa2Ewar6dK0d2BohoGCk=
+github.com/containifyci/engine-ci v0.37.5 h1:ae1oXUCNIiyubdNB0CaWLA2nBKaqur1X8oa1U6L8Q/U=
+github.com/containifyci/engine-ci v0.37.5/go.mod h1:nRHSeQ4nKsDA58Xn40Ej8vaVa2Ewar6dK0d2BohoGCk=
 github.com/containifyci/engine-ci/protos2 v0.23.0 h1:3WL9rds9Huy6aNx18D42mk6cQXDEsTSIcBQSoHIeHlg=
 github.com/containifyci/engine-ci/protos2 v0.23.0/go.mod h1:QSOp/vZyQPTNh78xRFHCbcFHlywrEUicKkRp9+oZv1M=
 github.com/containifyci/go-self-update v0.2.4 h1:h1JWwVihXPMikn4MBQlYtU8Nc6e1hxRos5/y1KTzE0k=
