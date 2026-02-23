@@ -53,8 +53,8 @@ github.com/containers/podman/v5 v5.7.1 h1:rxt3Fl3JS85ZnWZU7jTqR9YOk9fYFqI/2Gy6UM
 github.com/containers/podman/v5 v5.7.1/go.mod h1:+3SYEQiTjid9pnoFMF8jKWVOymTzIQCFGDsZ28b5nqw=
 github.com/containers/psgo v1.9.1-0.20250826150930-4ae76f200c86 h1:bYj0TVlkRZtMJYd6SbFOi1gjUJDJmVsYCpJla3URD7Y=
 github.com/containers/psgo v1.9.1-0.20250826150930-4ae76f200c86/go.mod h1:52GX23ST30pXpeviDvNpOCXoHqr+WJDv+7BjEH+AabY=
-github.com/containifyci/engine-ci v0.37.8 h1:DeVHmtojE/4vc7pt4/62+v4BM8EiEpADOeWekc6OH9g=
-github.com/containifyci/engine-ci v0.37.8/go.mod h1:GGhZY9ATv1Wh1KuO+DFuYg4Ub5e58g9i0sPbCaeY8XU=
+github.com/containifyci/engine-ci v0.38.0 h1:k0oaGSZG3PrGJEm72X5ozVgv3AfqAEvFm0QTF01T8Gw=
+github.com/containifyci/engine-ci v0.38.0/go.mod h1:73Gyf69TY05I52t2svBnUyqu9ILkMnuawLmRvHV0oEA=
 github.com/containifyci/engine-ci/protos2 v0.23.0 h1:3WL9rds9Huy6aNx18D42mk6cQXDEsTSIcBQSoHIeHlg=
 github.com/containifyci/engine-ci/protos2 v0.23.0/go.mod h1:QSOp/vZyQPTNh78xRFHCbcFHlywrEUicKkRp9+oZv1M=
 github.com/containifyci/go-self-update v0.2.4 h1:h1JWwVihXPMikn4MBQlYtU8Nc6e1hxRos5/y1KTzE0k=
@@ -280,8 +280,8 @@ github.com/sigstore/fulcio v1.8.5 h1:HYTD1/L5wlBp8JxsWxUf8hmfaNBBF/x3r3p5l6tZwbA
 github.com/sigstore/fulcio v1.8.5/go.mod h1:tSLYK3JsKvJpDW1BsIsVHZgHj+f8TjXARzqIUWSsSPQ=
 github.com/sigstore/protobuf-specs v0.5.0 h1:F8YTI65xOHw70NrvPwJ5PhAzsvTnuJMGLkA4FIkofAY=
 github.com/sigstore/protobuf-specs v0.5.0/go.mod h1:+gXR+38nIa2oEupqDdzg4qSBT0Os+sP7oYv6alWewWc=
-github.com/sigstore/sigstore v1.10.3 h1:s7fBYYOzW/2Vd0nND2ZdpWySb5vRF2u9eix/NZMHJm0=
-github.com/sigstore/sigstore v1.10.3/go.mod h1:T26vXIkpnGEg391v3TaZ8EERcXbnjtZb/1erh5jbIQk=
+github.com/sigstore/sigstore v1.10.4 h1:ytOmxMgLdcUed3w1SbbZOgcxqwMG61lh1TmZLN+WeZE=
+github.com/sigstore/sigstore v1.10.4/go.mod h1:tDiyrdOref3q6qJxm2G+JHghqfmvifB7hw+EReAfnbI=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=
 github.com/sirupsen/logrus v1.9.3/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVsIT4qYEQ=
 github.com/skeema/knownhosts v1.3.2 h1:EDL9mgf4NzwMXCTfaxSD/o/a5fxDw/xL9nkU28JjdBg=
