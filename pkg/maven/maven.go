@@ -42,9 +42,9 @@ type MavenContainer struct {
 	*container.Container
 }
 
-func New() build.BuildStepv3 {
+func New() build.BuildStep {
 	return build.Stepper{
-		RunFnV3: func(build container.Build) (string, error) {
+		RunFn: func(build container.Build) (string, error) {
 			container := new(&build)
 			return container.Run()
 		},
@@ -261,9 +261,9 @@ func (c *MavenContainer) BuildScript() string {
 	return Script(NewBuildScript(c.Verbose, c.Folder, getContainifyHost(c.GetBuild())))
 }
 
-func NewProd() build.BuildStepv3 {
+func NewProd() build.BuildStep {
 	return build.Stepper{
-		RunFnV3: func(build container.Build) (string, error) {
+		RunFn: func(build container.Build) (string, error) {
 			c := new(&build)
 			if build.Image == "" {
 				slog.Info("No image name skip prod image creation")
