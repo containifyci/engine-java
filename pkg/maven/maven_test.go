@@ -180,7 +180,7 @@ func TestProd(t *testing.T) {
 	assert.NoError(t, err)
 
 	if v, ok := cRuntime.(*critest.MockContainerManager); ok {
-		id, err := mc.RunWithBuildV3(*arg)
+		id, err := mc.RunWithBuild(*arg)
 		assert.NoError(t, err)
 		assert.NotEmpty(t, id)
 
