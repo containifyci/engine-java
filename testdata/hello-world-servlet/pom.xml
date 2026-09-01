@@ -33,7 +33,7 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version> <!-- or 6.x if your Tomcat supports it -->
+            <version>6.1.0</version> <!-- or 6.x if your Tomcat supports it -->
             <scope>provided</scope>
         </dependency>
 
