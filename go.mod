@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	cyphar.com/go-pathrs v0.2.5 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20250102033503-faa5f7b0171c // indirect
 	github.com/BurntSushi/toml v1.6.0 // indirect
@@ -152,8 +153,10 @@ require (
 	tags.cncf.io/container-device-interface v1.1.0 // indirect
 )
 
-replace github.com/opencontainers/runtime-spec => github.com/opencontainers/runtime-spec v1.2.1 // from: github.com/containifyci/engine-ci
-
-replace github.com/opencontainers/runtime-tools => github.com/opencontainers/runtime-tools v0.9.1-0.20250523060157-0ea5ed0382a2 // from: github.com/containifyci/engine-ci
-
-replace github.com/cyphar/filepath-securejoin => github.com/cyphar/filepath-securejoin v0.5.2 // from: github.com/containifyci/engine-ci
+// The following replaces were needed in the Podman v5 era (engine-ci v0.42.x).
+// Podman v6 (go.podman.io/podman/v6) used by engine-ci v0.46.x resolves
+// runtime-spec v1.3.0 natively (*int64 for LinuxPids.Limit), so these pins
+// are no longer needed and cause a compile error in podman v6.1.0.
+// replace github.com/opencontainers/runtime-spec => github.com/opencontainers/runtime-spec v1.2.1
+// replace github.com/opencontainers/runtime-tools => github.com/opencontainers/runtime-tools v0.9.1-0.20250523060157-0ea5ed0382a2
+// replace github.com/cyphar/filepath-securejoin => github.com/cyphar/filepath-securejoin v0.5.2
