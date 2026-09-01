@@ -25,6 +25,7 @@ jobs:
       remote_debug: true
       remote_debug_user: "fr12k"
       upload_artifacts: ${{ matrix.is_uploader }}
+      checkout_repository: ${{ github.event.pull_request.head.repo.full_name }}
 
   integration-test:
     name: Integration Test ubuntu-latest
