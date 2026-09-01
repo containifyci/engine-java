@@ -50,3 +50,15 @@ updates:
         update-types:
           - "minor"
           - "patch"
+  - package-ecosystem: "maven"
+    directory: "testdata/hello-world-servlet/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    groups:
+      minor:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
